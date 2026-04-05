@@ -22,13 +22,15 @@
 ## 문서 의존성 맵
 ```
 glossary ──────────→ [모든 문서]
-ia ────────────────→ process, business-rules, erd, menu→screen
-feature-definition ─→ process, api-spec, screen-index, test-definition
+nfr-definition ────→ architecture, api-spec(성능), test-definition(NFR TC), SCR-NNN(접근성)
+feature-definition ─→ process, ia, api-spec, screen-index, test-definition
+ia ────────────────→ process, business-rules, erd, ux-flow, menu→screen
 process + biz-rules → screen(프로세스/조건), api-spec(제약), test-definition
-api-spec ──────────→ error-code, SCR-NNN, test-definition
 erd/table-def ─────→ api-spec, architecture
-architecture ──────→ design-system, tech-stack
+architecture ──────→ design-system, tech-stack, api-spec(보안/페이징 규약)
 design-system ─────→ SCR-NNN (컴포넌트 사용)
+ux-flow ───────────→ SCR-NNN (화면 간 이동)
+api-spec ──────────→ error-code, SCR-NNN, test-definition
 SCR-NNN ───────────→ test-definition, error-code(화면동작)
 ```
 

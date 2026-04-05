@@ -8,9 +8,11 @@ globs: docs/**/*.md
 ## 필수 ID 형식
 - 기능: F-{DOMAIN}-{NNN} (예: F-USER-001)
 - 화면: SCR-{NNN} (예: SCR-001)
+- 업무규칙: BR-{DOMAIN}-{NNN} (예: BR-USER-001)
 - TC: TC-{F-ID}-{NNN} (예: TC-USER-001-001)
 - ADR: ADR-{NNN}
 - 에러: ERR-{DOMAIN}-{NNN}
+- NFR: NFR-{카테고리}-{NNN} (예: NFR-PERF-001, NFR-SEC-001)
 
 ## 파일명 규칙
 - 화면설계서: docs/05_screen/screens/SCR-{NNN}.md

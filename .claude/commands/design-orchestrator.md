@@ -47,13 +47,30 @@ $ARGUMENTS 가 있으면 해당 Phase부터 시작한다. (예: "Phase 4부터")
 - glossary.md 용어로 통일하여 작성
 - docs/00_srs/requirements-refined.md 생성
 
+### Step 1.5: 비기능 요구사항 (NFR) 정의
+- 입력물에서 NFR 항목 추출 + 사용자에게 누락 항목 질문
+- 각 NFR에 ID 채번: NFR-{카테고리}-{NNN}
+- **필수 카테고리:**
+  - **성능** (NFR-PERF): 응답시간 목표, 동시 사용자 수, 처리량
+  - **보안** (NFR-SEC): 인증 방식, 데이터 암호화, 감사 로그
+  - **접근성** (NFR-A11Y): WCAG 레벨, 키보드 네비게이션, 스크린리더
+  - **호환성** (NFR-COMPAT): 지원 브라우저, 디바이스, OS
+  - **가용성** (NFR-AVAIL): 가동시간 SLA, 장애 복구 목표
+- **선택 카테고리** (해당 시):
+  - 규제/컴플라이언스 (NFR-COMPLY)
+  - 국제화/다국어 (NFR-I18N)
+  - 확장성 (NFR-SCALE)
+- 각 NFR: 측정 가능한 기준 (예: "API 응답 95% < 200ms")
+- docs/00_srs/nfr-definition.md 생성
+
 ### Phase 1 리포트
 ```
 ✅ 완료 항목: {N}개 요구사항 정제됨
 ✅ 용어사전: {N}개 용어 등록
+✅ NFR: {N}개 정의 (성능/보안/접근성/호환성/가용성)
 ✅ 도메인 식별: {도메인 목록} ← Phase 2 병렬 분할의 기준
 ⚠️ 미확인: {N}개 (추후 확인 가능)
-📄 생성/갱신: requirements-refined.md, glossary.md
+📄 생성/갱신: requirements-refined.md, nfr-definition.md, glossary.md
 → 승인하시겠습니까? (승인 / 수정 요청 / 중단)
 ```
 
@@ -222,16 +239,29 @@ $ARGUMENTS 가 있으면 해당 Phase부터 시작한다. (예: "Phase 4부터")
 ## Phase 6: 아키텍처
 > ⚡ 순차 — 화면/품질의 기술적 기반 확정
 
-### Step 6.1: 시스템 아키텍처
+### Step 6.1: 시스템 아키텍처 + 보안 설계
+- nfr-definition.md 참조하여 아키텍처에 NFR 반영
 - 레이어 구조 (Presentation → Application → Domain → Infrastructure)
 - 패키지/모듈 구조
 - 도메인별 모듈 경계 (ia.md 기반)
 - 외부 시스템 연동 구조
+- **보안 설계 (architecture.md 내 섹션):**
+  - 인증 방식 (JWT / OAuth / 세션 등) + 흐름도
+  - 인가 모델 (역할-권한 매트릭스: 역할별 접근 가능 API/화면)
+  - 데이터 암호화 범위 (전송 중 / 저장 시)
+  - 감사 로그 대상
+- **API 공통 규약 (architecture.md 내 섹션):**
+  - 페이징 방식 (offset / cursor)
+  - 버전 관리 (/api/v1/)
+  - 응답 포맷 표준 (성공/에러 공통 구조)
+  - 인증 헤더 규격
+  - Rate limiting 정책 (NFR 기반)
 - docs/07_arch/architecture.md 생성
 
 ### Step 6.2: 기술 스택
 - 프레임워크, 라이브러리, DB, 캐시, 메시징 등
 - 각 선택의 **근거** (왜 이걸 쓰나)
+- NFR 달성을 위한 기술 선택 근거 연결
 - 버전 명시
 - docs/07_arch/tech-stack.md 생성
 
