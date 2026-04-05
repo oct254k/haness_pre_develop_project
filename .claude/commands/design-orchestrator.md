@@ -45,12 +45,27 @@ $ARGUMENTS 가 있으면 해당 Phase부터 시작한다. (예: "Phase 4부터")
 - **출력 규칙**: 에이전트는 자기 출력 파일만 생성/수정 (다른 파일 수정 금지)
 - **실패 시**: 오케스트레이터가 실패 에이전트만 재실행 (전체 재실행 아님)
 
+### 진행 기록 규칙
+- 매 Step/에이전트 시작·완료 시 `docs/_meta/progress-log.md`에 기록
+- 새 세션 시작 시 progress-log.md를 읽어 마지막 완료 지점부터 재개
+- 기록 형식: `| 시각 | Phase | Step | 에이전트 | 상태 | 출력 파일 |`
+
+### 문서 변경 이력 규칙
+- 이미 완성된 문서를 수정할 때, 해당 문서 끝에 `## Change Log` 섹션 추가:
+  ```
+  ## Change Log
+  | 일시 | 변경 항목 | 변경 내용 | 사유 |
+  ```
+- 적용 대상: feature-definition, api-spec, business-rules, process, SCR-NNN
+- 최초 생성 시에는 불필요 (수정 시에만)
+
 ---
 
 ## 실행 전 필수 확인
-1. docs/_meta/doc-index.md 읽기 (현재 진행 상태 확인)
-2. docs/_meta/glossary.md 읽기 (용어 기준 확인)
-3. docs/00_srs/ 에 입력물 존재 확인 (없으면 사용자에게 요청)
+1. docs/_meta/progress-log.md 읽기 (이전 세션 중단 지점 확인)
+2. docs/_meta/doc-index.md 읽기 (현재 진행 상태 확인)
+3. docs/_meta/glossary.md 읽기 (용어 기준 확인)
+4. docs/00_srs/ 에 입력물 존재 확인 (없으면 사용자에게 요청)
 
 ---
 
@@ -308,12 +323,28 @@ $ARGUMENTS 가 있으면 해당 Phase부터 시작한다. (예: "Phase 4부터")
 - **반응형은 기본**: 템플릿 유무와 관계없이 반응형 ���의 필수
 - docs/04_design/design-system.md 생성
 
+### Step 6.4: ADR (Architecture Decision Records)
+- Phase 6에서 내린 주요 결정을 ADR로 기록
+- 각 ADR:
+  - ADR-{NNN}: 제목
+  - 상태: 제안됨 / 승인됨
+  - 맥락: 왜 이 결정이 필요했나
+  - 결정: 무엇을 선택했나
+  - 근거: 왜 이걸 선택했나 (대안 비교)
+  - 영향: 이 결정으로 인한 제약/결과
+- 최소 생성 대상:
+  - ADR-001: 아키텍처 패턴 선택 (왜 이 레이어 구조인가)
+  - ADR-002: 기술 스택 선택 (왜 이 프레임워크/DB인가)
+  - ADR-003: 인증 방식 선택 (왜 JWT/OAuth/세션인가)
+- docs/07_arch/adr/ADR-{NNN}.md 생성
+
 ### Phase 6 리포트
 ```
 ✅ 아키텍처: 레이어 {N}개, 모듈 {N}개
 ✅ 기술스택: {주요 기술 나열}
 ✅ 디자인시스템: 템플릿에서 추출 (컴포넌트 {N}개, 색상 {N}개)
-📄 생성: architecture.md, tech-stack.md, design-system.md
+✅ ADR: {N}개 (주요 결정 기록)
+📄 생성: architecture.md, tech-stack.md, design-system.md, ADR-001~{N}.md
 → 승인하시겠습니까?
 ```
 
