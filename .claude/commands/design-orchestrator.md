@@ -13,9 +13,37 @@ $ARGUMENTS 가 있으면 해당 Phase부터 시작한다. (예: "Phase 4부터")
 
 ### 병렬 실행 원칙
 - **작성 병렬화**: 도메인별로 분리된 파일은 서브에이전트가 동시에 작성
-- **검증 병렬화**: 문서별 검증도 서브에이전트가 동시에 수���
+- **검증 병렬화**: 문서별 검증도 서브에이전트가 동시에 수행
 - **동기화는 병렬 작업 완료 후**: 모든 서브에이전트 결과를 모아서 교차 검증
 - **의존성 있는 작업만 순차**: Phase 간은 순차, Phase 내 독립 Step은 병렬
+
+### 서브에이전트 참조표 (Phase별)
+> 각 에이전트는 **읽을 문서**만 컨텍스트로 받고, **출력 파일**만 생성한다.
+> 프롬프트는 오케스트레이터가 Phase/Step 내용 기반으로 동적 생성한다.
+
+| Phase | 에이전트 | 읽을 문서 | 출력 파일 |
+|-------|---------|----------|----------|
+| 2 | 도메인별 ×N | glossary, requirements-refined, (해당 도메인 요구사항) | feature-definition-{DOMAIN}.md |
+| 4-A | 프로세스 (도메인별) | glossary, ia, feature-definition | process.md (또는 process-{DOMAIN}.md) |
+| 4-B | 업무규칙 (도메인별) | glossary, ia, feature-definition | business-rules.md (또는 BR-{DOMAIN}.md) |
+| 5-A | 테이블 (도메인별) | glossary, erd, business-rules | table-definition.md (또는 도메인별) |
+| 5-B | API (도메인별) | glossary, feature-definition, erd, process, nfr-definition | api-spec.md (또는 도메인별) |
+| 7 | 화면별 ×N | glossary, design-system, ux-flow, feature-def(해당), api-spec(해당), process(해당), business-rules(해당) | SCR-{NNN}.md |
+| 8-A | TC (도메인별) | feature-definition, SCR-NNN(해당), api-spec, business-rules | test-definition.md (또는 도메인별) |
+| 8-B | 에러코드 | api-spec, business-rules, SCR-NNN(에러 동작) | error-code.md |
+| 9-A | feature↔screen | feature-definition, screen-index | 검증 결과 (누락 목록) |
+| 9-B | feature↔API | feature-definition, api-spec | 검증 결과 |
+| 9-C | feature↔TC | feature-definition, test-definition | 검증 결과 |
+| 9-D | API↔error | api-spec, error-code | 검증 결과 |
+| 9-E | screen↔API | SCR-NNN, api-spec | 검증 결과 |
+| 9-F | process↔screen | process, screen-index | 검증 결과 |
+| 9-G | 용어 일관성 | glossary, [모든 문서] | 불일치 목록 |
+
+### 서브에이전트 실행 규칙
+- **공통 컨텍스트**: glossary.md는 모든 에이전트가 항상 읽는다
+- **최소 컨텍스트**: 해당 에이전트에 필요한 문서만 전달 (전체 docs/ 금지)
+- **출력 규칙**: 에이전트는 자기 출력 파일만 생성/수정 (다른 파일 수정 금지)
+- **실패 시**: 오케스트레이터가 실패 에이전트만 재실행 (전체 재실행 아님)
 
 ---
 
