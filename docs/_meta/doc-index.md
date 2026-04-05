@@ -26,10 +26,7 @@ SCR-NNN ───────────→ screen-index, test-definition
 erd/table-def ─────→ api-spec, architecture
 ```
 
-## 가이드 문서
+## 가이드
 | 문서 | 용도 |
 |------|------|
 | [USER-GUIDE.md](../../USER-GUIDE.md) | 사용자 매뉴얼 |
-| [skill-map.md](skill-map.md) | 설계/개발/운영 스킬 분류 |
-| [dev-kickoff-guide.md](dev-kickoff-guide.md) | 설계 완료 후 개발 가이드 |
-| [six-principles-guide.md](six-principles-guide.md) | 6원칙 적용 비교 |
