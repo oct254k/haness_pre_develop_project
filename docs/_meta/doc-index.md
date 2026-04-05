@@ -3,7 +3,7 @@
 
 ## 실행 방법
 - **사용자:** `USER-GUIDE.md` 읽기
-- **에이전트:** `/design-orchestrator` 실행 → Phase 1~7 자동 진행
+- **에이전트:** `/design-orchestrator` 실행 → Phase 1~9 자동 진행
 
 ## 현재 진행 상태
 
@@ -11,19 +11,25 @@
 |-------|--------|------|------|
 | 1 | 요구사항 분석/정제 | ⬜ 미시작 | docs/00_srs/ |
 | 2 | 기능정의서 | ⬜ 미시작 | docs/01_feature/ |
-| 3 | 분석 (프로세스/IA/업무규칙) | ⬜ 미시작 | docs/02_analysis/ |
-| 4 | 데이터설계 (ERD/테이블/API) | ⬜ 미시작 | docs/03_data/ |
-| 5 | 화면설계 (디자인+화면상세) | ⬜ 미시작 | docs/04_design/, docs/05_screen/ |
-| 6 | 품질/아키텍처 | ⬜ 미시작 | docs/06_quality/, docs/07_arch/ |
-| 7 | 동기화 + 검증 | ⬜ 미시작 | docs/_meta/ |
+| 3 | IA (도메인/메뉴 구조) | ⬜ 미시작 | docs/02_analysis/ia.md |
+| 4 | 프로세스 + 업무규칙 | ⬜ 미시작 | docs/02_analysis/ |
+| 5 | 데이터설계 (ERD/테이블/API) | ⬜ 미시작 | docs/03_data/ |
+| 6 | 아키텍처 + 디자인시스템 | ⬜ 미시작 | docs/07_arch/, docs/04_design/ |
+| 7 | 화면설계 | ⬜ 미시작 | docs/05_screen/ |
+| 8 | 품질 (TC/에러코드) | ⬜ 미시작 | docs/06_quality/ |
+| 9 | 동기화 + 검증 | ⬜ 미시작 | docs/_meta/ |
 
 ## 문서 의존성 맵
 ```
-glossary ──────────→ [모든 문서] (용어 기준)
-feature-definition ─→ process, ia, api-spec, screen-index, test-definition
+glossary ──────────→ [모든 문서]
+ia ────────────────→ process, business-rules, erd, menu→screen
+feature-definition ─→ process, api-spec, screen-index, test-definition
+process + biz-rules → screen(프로세스/조건), api-spec(제약), test-definition
 api-spec ──────────→ error-code, SCR-NNN, test-definition
-SCR-NNN ───────────→ screen-index, test-definition
 erd/table-def ─────→ api-spec, architecture
+architecture ──────→ design-system, tech-stack
+design-system ─────→ SCR-NNN (컴포넌트 사용)
+SCR-NNN ───────────→ test-definition, error-code(화면동작)
 ```
 
 ## 가이드
