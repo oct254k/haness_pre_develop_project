@@ -1,0 +1,12 @@
+# Claude Code 개인 설정 (팀 공유 X)
+.claude/settings.local.json
+
+# OS
+.DS_Store
+
+# 기존 스킬 원본 (참고용, 레포에 불필요)
+docs/dyuraskill/
+docs/dyuraskill.zip
+
+# 임시
+try/

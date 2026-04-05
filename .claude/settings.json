@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Write(docs/**)",
+      "Edit(docs/**)",
+      "Write(CLAUDE.md)",
+      "Edit(CLAUDE.md)",
+      "Write(.claude/**)",
+      "Edit(.claude/**)"
+    ],
+    "deny": [
+      "Write(src/**)",
+      "Edit(src/**)",
+      "Bash(rm -rf *)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "filepath=\"$CLAUDE_FILE_PATH\"; if echo \"$filepath\" | grep -q '^docs/' && ! echo \"$filepath\" | grep -q '_meta/'; then echo '[sync] sync-status.md 갱신 필요: '$filepath; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
