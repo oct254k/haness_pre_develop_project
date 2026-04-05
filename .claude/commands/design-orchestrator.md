@@ -28,6 +28,7 @@ $ARGUMENTS 가 있으면 해당 Phase부터 시작한다. (예: "Phase 4부터")
 | 4-B | 업무규칙 (도메인별) | glossary, ia, feature-definition | business-rules.md (또는 BR-{DOMAIN}.md) |
 | 5-A | 테이블 (도메인별) | glossary, erd, business-rules | table-definition.md (또는 도메인별) |
 | 5-B | API (도메인별) | glossary, feature-definition, erd, process, nfr-definition | api-spec.md (또는 도메인별) |
+| 5-C | 인터페이스 | glossary, feature-definition, process, Phase2 Q1 답변 | interface-spec.md (또는 유형별) |
 | 7 | 화면별 ×N | glossary, design-system, ux-flow, feature-def(해당), api-spec(해당), process(해당), business-rules(해당) | SCR-{NNN}.md |
 | 8-A | TC (도메인별) | feature-definition, SCR-NNN(해당), api-spec, business-rules | test-definition.md (또는 도메인별) |
 | 8-B | 에러코드 | api-spec, business-rules, SCR-NNN(에러 동작) | error-code.md |
@@ -144,7 +145,12 @@ $ARGUMENTS 가 있으면 해당 Phase부터 시작한다. (예: "Phase 4부터")
 
 ### Step 2.4: 추가 인풋 수집
 - 사용자에게 질문:
-  - Q1: 외부 연동 API가 있나?
+  - Q1: **외부 시스템 연동이 있나?** (있으면 아래 상세 수집)
+    - SAP, ERP, CRM 등 패키지 연동?
+    - 외부 API 호출? (결제, 알림, 지도, 인증 등)
+    - 외부 DB 직접 연결? (타 시스템 DB 조회/연동)
+    - 타 시스템과 인터페이스? (파일 전송, 메시지 큐, 배치 연동)
+    - 모르면 "없는 것 같다" → 에이전트가 RFP 기반으로 예상 연동 목록 제시
   - Q2: 도메인 특수 개념/용어가 있나?
   - Q3: 레거시 데이터 이관이 필요한가?
   - Q4: 빠진 기능이 있나?
@@ -251,7 +257,7 @@ $ARGUMENTS 가 있으면 해당 Phase부터 시작한다. (예: "Phase 4부터")
 - 도메인 경계 표시
 - docs/03_data/erd.md 생성
 
-### Step 5.2 ~ 5.3 (🔀 병렬 — ERD 완료 후)
+### Step 5.2 ~ 5.4 (🔀 병렬 — ERD 완료 후, 3그룹 동시)
 
 **에이전트 A: 테이블 정의 (도메인별 병렬 가능)**
 - erd.md + business-rules 기반
@@ -271,11 +277,36 @@ $ARGUMENTS 가 있으면 해당 Phase부터 시작한다. (예: "Phase 4부터")
 - docs/03_data/api-spec.md 생성
 - 엔드포인트 30개 초과 시 도메인별 분리
 
+**에이전트 C: 외부 시스템 인터페이스 정의**
+- Phase 2 Q1에서 수집한 외부 연동 정보 + feature-definition + process.md 기반
+- **없는 경우**: RFP와 기능 목록에서 예상되는 외부 연동을 추론하여 제시
+  - "이 기능은 외부 결제 연동이 필요할 것으로 예상됩니다" (사용자 확인 필요)
+- 각 인터페이스별 정의:
+  | 항목 | 내용 |
+  |------|------|
+  | 인터페이스 ID | IF-{대상}-{NNN} (예: IF-SAP-001) |
+  | 대상 시스템 | 시스템명, 버전, 담당부서 |
+  | 연동 유형 | API 호출 / DB 직접연결 / 파일전송 / 메시지큐 / 배치 |
+  | 방향 | 송신 / 수신 / 양방향 |
+  | 데이터 | 주고받는 데이터 항목, 포맷 (JSON/XML/CSV/고정길이) |
+  | 호출 시점 | 실시간 / 배치 (주기) / 이벤트 트리거 |
+  | 관련 기능 ID | 어떤 기능에서 이 연동이 필요한가 |
+  | 장애 시 처리 | 타임아웃, 재시도, 대체 처리, 알림 |
+  | 보안 | 인증 방식, 암호화, IP 제한 |
+- 인터페이스 유형별 구조:
+  - **SAP/ERP 연동**: RFC/BAPI명, 입출력 구조체
+  - **외부 API**: 엔드포인트, 인증(API Key/OAuth), rate limit
+  - **외부 DB**: 접속 정보, 조회 테이블/뷰, 읽기전용 여부
+  - **파일 연동**: 경로, 파일명 규칙, 인코딩, 구분자
+  - **메시지 큐**: 토픽/큐명, 메시지 포맷, 순서 보장 여부
+- docs/03_data/interface-spec.md 생성
+- 인터페이스 10개 초과 시 유형별 분리: interface-spec-{TYPE}.md
+
 ### Phase 5 리포트
 ```
-✅ 테이블: {N}개 | API: {N}개 엔드포인트
-🔀 병렬 실행: 서브에이전트 2그룹 (테이블 / API)
-📄 생성: erd.md, table-definition.md, api-spec.md
+✅ 테이블: {N}개 | API: {N}개 엔드포인트 | 외부 인터페이스: {N}개
+🔀 병렬 실행: 서브에이전트 3그룹 (테이블 / API / 인터페이스)
+📄 생성: erd.md, table-definition.md, api-spec.md, interface-spec.md
 → 승인하시겠습니까?
 ```
 

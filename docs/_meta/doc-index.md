@@ -13,7 +13,7 @@
 | 2 | 기능정의서 | ⬜ 미시작 | docs/01_feature/ |
 | 3 | IA (도메인/메뉴 구조) | ⬜ 미시작 | docs/02_analysis/ia.md |
 | 4 | 프로세스 + 업무규칙 | ⬜ 미시작 | docs/02_analysis/ |
-| 5 | 데이터설계 (ERD/테이블/API) | ⬜ 미시작 | docs/03_data/ |
+| 5 | 데이터설계 (ERD/테이블/API/인터페이스) | ⬜ 미시작 | docs/03_data/ |
 | 6 | 아키텍처 + 디자인시스템 + ADR | ⬜ 미시작 | docs/07_arch/, docs/04_design/ |
 | 7 | 화면설계 | ⬜ 미시작 | docs/05_screen/ |
 | 8 | 품질 (TC/에러코드) | ⬜ 미시작 | docs/06_quality/ |
@@ -27,6 +27,7 @@ feature-definition ─→ process, ia, api-spec, screen-index, test-definition
 ia ────────────────→ process, business-rules, erd, ux-flow, menu→screen
 process + biz-rules → screen(프로세스/조건), api-spec(제약), test-definition
 erd/table-def ─────→ api-spec, architecture
+interface-spec ────→ architecture(연동 구조), api-spec(외부 호출), SCR-NNN(연동 화면)
 architecture ──────→ design-system, tech-stack, api-spec(보안/페이징 규약)
 design-system ─────→ SCR-NNN (컴포넌트 사용)
 ux-flow ───────────→ SCR-NNN (화면 간 이동)

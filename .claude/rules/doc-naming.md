@@ -13,6 +13,7 @@ globs: docs/**/*.md
 - ADR: ADR-{NNN}
 - 에러: ERR-{DOMAIN}-{NNN}
 - NFR: NFR-{카테고리}-{NNN} (예: NFR-PERF-001, NFR-SEC-001)
+- 인터페이스: IF-{대상시스템}-{NNN} (예: IF-SAP-001, IF-PG-001)
 
 ## 파일명 규칙
 - 화면설계서: docs/05_screen/screens/SCR-{NNN}.md
